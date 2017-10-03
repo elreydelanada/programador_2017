@@ -10,8 +10,8 @@ package managers;
  * @author alumno
  */
 public class ConfigManager {
-    public static String HOST         = "localhost";
+    public static String HOST         = "10.3.68.164";
     public static String BD           = "clase30";
-    public static String USUARIO      = "root";
+    public static String USUARIO      = "cfp36";
     public static String PASSWORD     = "";
 }
