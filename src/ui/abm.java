@@ -8,8 +8,10 @@ package ui;
 
 import clase31.SQLError;
 import clase31.tablas.UsuarioTablaModelo;
+import dao.DepartamentoDao;
 import dao.ProvinciaDao;
 import dao.UsuarioDao;
+import entidades.Departamento;
 import entidades.Provincia;
 import entidades.Usuario;
 import java.sql.Connection;
@@ -39,6 +41,7 @@ public class abm extends javax.swing.JFrame {
         initComponents();
         mostrarUsuarios(null);
         rellenarComboProvincia();
+        dptoCombo.setEnabled(false);
     }
     
     public void rellenarComboProvincia(){
@@ -51,7 +54,20 @@ public class abm extends javax.swing.JFrame {
             modelo.addElement(provincia);            
         }
         
-        provinciaCombo.setModel(modelo);
+        provinciaCombo.setModel(modelo);        
+    }
+    
+    public void rellenarComboDepartamento(int id_provincia){
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        
+        DepartamentoDao dptoDao         = new DepartamentoDao();        
+        LinkedList<Departamento> lista     = dptoDao.getByProvinciaId(id_provincia);
+                        
+        for (Departamento dpto : lista) {
+            modelo.addElement(dpto);            
+        }
+        
+        dptoCombo.setModel(modelo);        
     }
     
     public void mostrarUsuarios(String valorBuscado){
@@ -114,6 +130,8 @@ public class abm extends javax.swing.JFrame {
         nuevoBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         provinciaCombo = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        dptoCombo = new javax.swing.JComboBox<>();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -202,6 +220,15 @@ public class abm extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Departamento");
+
+        dptoCombo.setModel(new DefaultComboBoxModel());
+        dptoCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dptoComboActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -214,29 +241,30 @@ public class abm extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
                         .addGap(96, 96, 96)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dniTxt)
                             .addComponent(nombreTxt)
                             .addComponent(apellidoTxt)
-                            .addComponent(provinciaCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(provinciaCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dptoCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(nuevoBtn)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(buscarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buscarBtn)
+                                .addGap(82, 82, 82)
+                                .addComponent(nuevoBtn))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(guardarBtn)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(guardarBtn)))
                 .addGap(18, 18, 18)
                 .addComponent(dniError, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(buscarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(buscarBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,14 +286,16 @@ public class abm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(provinciaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nuevoBtn)
-                    .addComponent(guardarBtn))
-                .addGap(8, 8, 8)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(dptoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buscarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscarBtn))
+                    .addComponent(buscarBtn)
+                    .addComponent(nuevoBtn)
+                    .addComponent(guardarBtn))
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -390,9 +420,15 @@ public class abm extends javax.swing.JFrame {
     }//GEN-LAST:event_nuevoBtnActionPerformed
 
     private void provinciaComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_provinciaComboActionPerformed
+        dptoCombo.setEnabled(false);
         Provincia provincia = (Provincia)provinciaCombo.getSelectedItem();
-        System.out.println(provincia.getId());
+        rellenarComboDepartamento(provincia.getId());        
+        dptoCombo.setEnabled(true);
     }//GEN-LAST:event_provinciaComboActionPerformed
+
+    private void dptoComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dptoComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dptoComboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -436,12 +472,14 @@ public class abm extends javax.swing.JFrame {
     private javax.swing.JTextField buscarTxt;
     private javax.swing.JLabel dniError;
     private javax.swing.JTextField dniTxt;
+    private javax.swing.JComboBox<String> dptoCombo;
     private javax.swing.JMenuItem eliminar;
     private javax.swing.JButton guardarBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
